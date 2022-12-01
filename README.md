@@ -1,8 +1,8 @@
 # 🎄 Advent of Code 🎄
 
-| Language  | Week 1 | Week 2 | Week 3 | Week 4 | Week 5 |
-| :-- | :-: | :-: | :-: |  :-: |  :-: | 
-| [2022 - JavaScript](2022/README.md) | ❌❌❌❌❌ | ❌❌❌❌❌ | ❌❌❌❌❌ | ❌❌❌❌❌ | ❌❌❌❌❌ |
+| Language  | Week 1 | Week 2 | Week 3 | Week 4 | 
+| :-- | :-: | :-: | :-: |  :-: |  
+| [2022 - JavaScript](2022/README.md) | ❌❌❌❌ | ❌❌❌❌❌❌❌ | ❌❌❌❌❌❌❌ | ❌❌❌❌❌❌❌ | 
 
 <table>
     <tr>
