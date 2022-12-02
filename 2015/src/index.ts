@@ -1,4 +1,5 @@
 import { Day01 } from "./day01/day01";
+import { Day02 } from "./day02/day02";
 import { Task } from "./task";
 
 console.log("Advent of Code 2015 🎄");
@@ -22,6 +23,9 @@ let day: NullableTask = null;
 switch (date) {
   case 1:
     day = new Day01();
+    break;
+  case 2:
+    day = new Day02();
     break;
 }
 
