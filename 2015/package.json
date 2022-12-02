@@ -9,7 +9,7 @@
     "start": "npm run build && node build/index.js"
   },
   "keywords": [],
-  "author": "Kristina Engström - Grodaaa",
+  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.11.10",
