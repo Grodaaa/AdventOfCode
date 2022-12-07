@@ -1,6 +1,7 @@
 import { Day01 } from "./day01/day01";
 import { Day02 } from "./day02/day02";
 import { Day03 } from "./day03/day03";
+import { Day04 } from "./day04/day04";
 import { Task } from "./task";
 
 console.log("Advent of Code 2022 🎄");
@@ -30,6 +31,9 @@ switch (date) {
     break;
   case 3:
     day = new Day03();
+    break;
+  case 4:
+    day = new Day04();
     break;
 }
 
