@@ -8,7 +8,7 @@
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/Debug/net9.0/2022csharp.dll",
+            "program": "${workspaceFolder}/bin/Debug/net9.0/2022.dll",
             "args": ["00"],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
