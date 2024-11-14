@@ -2,14 +2,16 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"type": "dotnet",
-			"task": "build",
+			"type": "msbuild",
+			"problemMatcher": [
+				"$msCompile"
+			],
 			"group": {
 				"kind": "build",
 				"isDefault": true
 			},
-			"problemMatcher": [],
-			"label": "build"
+			"label": "build",
+			"detail": "Build the 2022.csproj project using dotnet build"
 		}
 	]
 }
