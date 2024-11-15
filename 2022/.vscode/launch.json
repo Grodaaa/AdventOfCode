@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "program": "${workspaceFolder}/bin/Debug/net9.0/2022.dll",
-            "args": ["3"],
+            "args": ["5"],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole",
