@@ -10,7 +10,6 @@ namespace AdventOfCode.Day01
         public override string PartTwo()
         {
             var elfCalories = GetElfCalories();
-            var ehj = elfCalories.OrderDescending();
             return elfCalories.OrderDescending().Take(3).Sum().ToString();
         }
 
