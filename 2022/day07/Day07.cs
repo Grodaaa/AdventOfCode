@@ -1,5 +1,3 @@
-using System.IO.Compression;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Day07
@@ -26,7 +24,25 @@ namespace AdventOfCode.Day07
 
         public override string PartTwo()
         {
-            throw new NotImplementedException();
+            var deletedData = 0;
+            var minReqDeletedData = 0;
+            var totalDiscSpace = 70000000;
+            var minDiscSpace = 30000000;
+            var outerMostKey = "/-";
+
+            _folderStructure = GetFolderStructure();
+            _folderStructure.ForEach(x => GetFilesSize(x));
+
+            var usedDiscSpace = _folderFileSize[outerMostKey];
+            var unusedDiscScpace = totalDiscSpace - usedDiscSpace;
+
+            if (unusedDiscScpace < minDiscSpace)
+            {
+                minReqDeletedData = minDiscSpace - unusedDiscScpace;
+            }
+
+            deletedData = _folderFileSize.Where(x => x.Value >= minReqDeletedData).Select(x => x.Value).Order().First();
+            return deletedData.ToString();
         }
 
         private List<Folder> GetFolderStructure()
@@ -40,65 +56,57 @@ namespace AdventOfCode.Day07
 
             for (var i = 0; i < splittedInput.Length; i++)
             {
-                try
+                Match moveDirectoryMatch = Regex.Match(splittedInput[i], _commandMoveDirectoryPattern);
+                Match listDirectoryMatch = Regex.Match(splittedInput[i], _commandListDirectoryPattern);
+
+                if (moveDirectoryMatch.Success)
                 {
-                    Match moveDirectoryMatch = Regex.Match(splittedInput[i], _commandMoveDirectoryPattern);
-                    Match listDirectoryMatch = Regex.Match(splittedInput[i], _commandListDirectoryPattern);
-
-                    if (moveDirectoryMatch.Success)
+                    string directory = moveDirectoryMatch.Groups[1].Value;
+                    if (directory != "..")
                     {
-                        string directory = moveDirectoryMatch.Groups[1].Value;
-                        if (directory != "..")
-                        {
-                            level++;
-                            if (currentFolder != null)
-                                currentFolder = currentFolder.SubFolders.First(x => x.Name == directory);
-                            else
-                                currentFolder = folders.First();
-                        }
+                        level++;
+                        if (currentFolder != null)
+                            currentFolder = currentFolder.SubFolders.First(x => x.Name == directory);
                         else
-                        {
-                            level--;
-                            currentFolder = currentFolder.ParentFolder;
-                        }
+                            currentFolder = folders.First();
                     }
-                    else if (listDirectoryMatch.Success)
+                    else
                     {
-                        var itemsInDirectory = new List<string>();
-                        for (int j = i + 1; j < splittedInput.Length; j++)
-                        {
-                            if (Regex.IsMatch(splittedInput[j], _commandMoveDirectoryPattern) ||
-                                Regex.IsMatch(splittedInput[j], _commandListDirectoryPattern))
-                            {
-                                i = j - 1;
-                                break;
-                            }
-                            itemsInDirectory.Add(splittedInput[j]);
-                        }
-
-                        foreach (var itemInDirectory in itemsInDirectory)
-                        {
-                            var splittedString = itemInDirectory.Split(' ');
-                            if (splittedString.Length == 2 && splittedString[0] != "dir")
-                            {
-                                var newFile = new File() { Size = int.Parse(splittedString[0]), Name = splittedString[1] };
-                                currentFolder!.Files.Add(newFile);
-                            }
-                            else if (splittedString.Length == 2 && splittedString[0] == "dir")
-                            {
-                                if (!currentFolder!.SubFolders.Any(x => x.Name == splittedString[1]))
-                                {
-                                    var newFolder = new Folder() { Name = splittedString[1], Level = level + 1, ParentFolder = currentFolder, ParentFolderName = currentFolder.Name };
-                                    currentFolder.SubFolders.Add(newFolder);
-                                }
-                            }
-                        }
+                        level--;
+                        currentFolder = currentFolder.ParentFolder;
                     }
                 }
-                catch (System.Exception)
+                else if (listDirectoryMatch.Success)
                 {
-                    Console.WriteLine($"Index {i}");
-                    throw;
+                    var itemsInDirectory = new List<string>();
+                    for (int j = i + 1; j < splittedInput.Length; j++)
+                    {
+                        if (Regex.IsMatch(splittedInput[j], _commandMoveDirectoryPattern) ||
+                            Regex.IsMatch(splittedInput[j], _commandListDirectoryPattern))
+                        {
+                            i = j - 1;
+                            break;
+                        }
+                        itemsInDirectory.Add(splittedInput[j]);
+                    }
+
+                    foreach (var itemInDirectory in itemsInDirectory)
+                    {
+                        var splittedString = itemInDirectory.Split(' ');
+                        if (splittedString.Length == 2 && splittedString[0] != "dir")
+                        {
+                            var newFile = new File() { Size = int.Parse(splittedString[0]), Name = splittedString[1] };
+                            currentFolder!.Files.Add(newFile);
+                        }
+                        else if (splittedString.Length == 2 && splittedString[0] == "dir")
+                        {
+                            if (!currentFolder!.SubFolders.Any(x => x.Name == splittedString[1]))
+                            {
+                                var newFolder = new Folder() { Name = splittedString[1], Level = level + 1, ParentFolder = currentFolder, ParentFolderName = currentFolder.Name };
+                                currentFolder.SubFolders.Add(newFolder);
+                            }
+                        }
+                    }
                 }
             }
             return folders;
@@ -127,80 +135,3 @@ namespace AdventOfCode.Day07
         }
     }
 }
-
-
-
-// private List<Folder> GetFolderStructure()
-//         {
-//             var splittedInput = Input.Split("\n");
-//             var folders = new List<Folder>() { new() { Name = "/", Level = 1 } };
-
-//             Folder currentFolder = null!;
-
-//             int level = 0;
-
-//             for (var i = 0; i < splittedInput.Length; i++)
-//             {
-//                 try
-//                 {
-//                     Match moveDirectoryMatch = Regex.Match(splittedInput[i], _commandMoveDirectoryPattern);
-//                     Match listDirectoryMatch = Regex.Match(splittedInput[i], _commandListDirectoryPattern);
-
-//                     if (moveDirectoryMatch.Success)
-//                     {
-//                         string directory = moveDirectoryMatch.Groups[1].Value;
-//                         if (directory != "..")
-//                         {
-//                             level++;
-//                             if (currentFolder != null)
-//                                 currentFolder = folders.First(f => f.Name == directory && f.ParentFolderName == currentFolder.Name);
-//                             else
-//                                 currentFolder = folders.First();
-//                         }
-//                         else
-//                         {
-//                             level--;
-//                             currentFolder = folders.First(f => f.Name == currentFolder.ParentFolderName);
-//                         }
-//                     }
-//                     else if (listDirectoryMatch.Success)
-//                     {
-//                         var itemsInDirectory = new List<string>();
-//                         for (int j = i + 1; j < splittedInput.Length; j++)
-//                         {
-//                             if (Regex.IsMatch(splittedInput[j], _commandMoveDirectoryPattern) ||
-//                                 Regex.IsMatch(splittedInput[j], _commandListDirectoryPattern))
-//                             {
-//                                 i = j - 1;
-//                                 break;
-//                             }
-//                             itemsInDirectory.Add(splittedInput[j]);
-//                         }
-
-//                         foreach (var itemInDirectory in itemsInDirectory)
-//                         {
-//                             var splittedString = itemInDirectory.Split(' ');
-//                             if (splittedString.Length == 2 && splittedString[0] != "dir")
-//                             {
-//                                 var newFile = new File() { Size = int.Parse(splittedString[0]), Name = splittedString[1] };
-//                                 currentFolder.Files.Add(newFile);
-//                             }
-//                             else if (splittedString.Length == 2 && splittedString[0] == "dir")
-//                             {
-//                                 if (!folderStructure.Any(f => f.Name == splittedString[1] && f.Level == level + 1 && f.ParentFolderName == currentFolder.Name))
-//                                 {
-//                                     var newFolder = new Folder() { Name = splittedString[1], Level = level + 1, ParentFolderName = currentFolder.Name };
-//                                     folders.Add(newFolder);
-//                                 }
-//                             }
-//                         }
-//                     }
-//                 }
-//                 catch (System.Exception)
-//                 {
-//                     Console.WriteLine($"Index {i}");
-//                     throw;
-//                 }
-//             }
-//             return folders;
-//         }
