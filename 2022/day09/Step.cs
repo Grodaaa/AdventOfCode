@@ -16,16 +16,21 @@ namespace AdventOfCode.Day09
 
     class Coordinates
     {
-        public int Latitude { get; set; }
-        public int Longitude { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
 
         public override bool Equals(object? obj)
         {
             if (obj != null && obj is Coordinates otherCoord)
             {
-                return otherCoord.Latitude == Latitude && otherCoord.Longitude == Longitude;
+                return otherCoord.X == X && otherCoord.Y == Y;
             }
-            return false; ;
+            return false;
+        }
+
+        public override string ToString()
+        {
+            return $"{X},{Y}";
         }
     }
 }
