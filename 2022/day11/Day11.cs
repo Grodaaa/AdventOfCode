@@ -108,10 +108,10 @@ namespace AdventOfCode.Day11
         private List<Monkey> GetMonkies()
         {
             var monkies = new List<Monkey>();
-            var monkiesInput = Input.Split("\n\n");
+            var monkiesInput = Input.Split("\r\n\r\n");
             foreach (var monkeyInput in monkiesInput)
             {
-                var arr = monkeyInput.Split("\n");
+                var arr = monkeyInput.Split("\r\n");
                 if (arr.Length == 6)
                 {
                     monkies.Add(

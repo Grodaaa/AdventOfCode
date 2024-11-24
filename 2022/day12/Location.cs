@@ -1,3 +1,5 @@
+using static System.Net.Mime.MediaTypeNames;
+
 namespace AdventOfCode.Day12
 {
     internal class Location
@@ -11,7 +13,7 @@ namespace AdventOfCode.Day12
 
         public int X { get; set; }
         public int Y { get; set; }
-        public char Weight { get; set; }
+        public int Weight { get; set; }
     }
 
     internal class Grid
@@ -47,16 +49,30 @@ namespace AdventOfCode.Day12
                 Location next = new(id.X + dir.X, id.Y + dir.Y);
                 if (InBounds(next) && Passable(next))
                 {
-                    yield return next;
+                    yield return GetNeighborLocation(next);
                 }
             }
         }
 
+        private Location GetNeighborLocation(Location id)
+        {
+            var allItems = new List<Location>(forests);
+            allItems.AddRange(walls);
+            foreach (var item in allItems)
+            {
+                if (item.X == id.X && item.Y == id.Y)
+                    return item;
+            }
+
+            throw new ArgumentException($"Value with x coord {id.X} and y coord {id.Y} dosen't exist in grid");
+        }
+
         public int Cost(Location a, Location b)
         {
-            if(forests.Contains(b) && Math.Abs(b.Weight - a.Weight) == 1)
-                return 1;
-            return 10000;
+            if (forests.Contains(b) || walls.Contains(b))
+                return Math.Abs(b.Weight - a.Weight);
+
+            throw new ArgumentException($"Location {b.Weight} dosen't exist.");
         }
     }
 }
