@@ -19,8 +19,8 @@ namespace AdventOfCode
         {
             var info = Assembly.GetExecutingAssembly().GetName();
             var name = info.Name;
-            //var inputFileName = $"_{name}.inputs.{GetType().Name.ToLower()}_input.txt";
-            var inputFileName = $"AdventOfCode._2024.inputs.{GetType().Name.ToLower()}_input.txt";
+            //var inputFileName = $"{name}.inputs.{GetType().Name.ToLower()}_input.txt";
+            var inputFileName = $"AdventOfCode.inputs.{GetType().Name.ToLower()}_input.txt";
 
             var hej = Assembly
             .GetExecutingAssembly().GetManifestResourceNames();
