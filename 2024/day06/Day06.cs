@@ -110,7 +110,7 @@
                     {
                         successfulObsaclePositions.Add(visitedPositions.ElementAt(i).Key);
 
-                        Console.WriteLine($"Successful obstacles {successfulObsaclePositions.Count}: {visitedPositions.ElementAt(i).Key}");
+                        //Console.WriteLine($"Successful obstacles {successfulObsaclePositions.Count}: {visitedPositions.ElementAt(i).Key}");
                         break;
                     }
 
